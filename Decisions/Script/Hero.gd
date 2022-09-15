@@ -31,11 +31,13 @@ func _ready():
 
 func _process(delta):
 	animations()
+	
 
 func _physics_process(delta):
 	velocity.x = 0
 	
 	velocity.y += weight * delta
+	
 	
 	if activado:
 		get_input()
@@ -51,8 +53,9 @@ func get_input():
 	var left = Input.is_action_pressed("ui_left")
 	var rigth = Input.is_action_pressed("ui_right")
 	
-	if up:
-		velocity.y -= jump_speed
+	if is_on_floor():
+		if up:
+			velocity.y -= jump_speed
 	
 	if left:
 		velocity.x -= speed
@@ -65,7 +68,7 @@ func animations():
 	
 	var z = Input.is_action_just_pressed("ui_z")
 	
-	if z and activado:
+	if z:
 		$AnimationPlayer.play("Punch")
 	
 	if !$AnimationPlayer.is_playing():
@@ -86,15 +89,13 @@ func _on_Area_dano_area_entered(area):
 func ia_movement():
 	var distance = self.global_position.x - rival.global_position.x
 	
-	if abs(distance) > 100 and $Salud.current >= 10:
-		velocity.x = speed*-sign(distance)
-	elif abs(distance) > 100 and 10 > $Salud.current > 5:
+	if abs(distance) > 150 and $Salud.current > 5:
 		match agresivity:
 			0:
 				velocity.x = speed*sign(distance)
 			1:
 				velocity.x = speed*-sign(distance)
-	elif abs(distance) > 100 and $Salud.current < 5:
+	elif abs(distance) > 150 and $Salud.current <= 5:
 		velocity.x = speed*sign(distance)
 	
 
@@ -102,3 +103,9 @@ func _on_Agresividad_timeout():
 	rgn.randomize()
 	agresivity = rgn.randi_range(0,1)
 	
+
+func _on_Area_vision_body_entered(body):
+	rgn.randomize()
+	var op = rgn.randi_range(0,1)
+	if op == 1:
+		$AnimationPlayer.play("Punch")

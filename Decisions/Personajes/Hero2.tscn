@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Script/Hero.gd" type="Script" id=1]
 [ext_resource path="res://Sprites/Heroe1/Caminando 1.png" type="Texture" id=2]
@@ -30,6 +30,9 @@ animations = [ {
 
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 30.5, 16 )
+
+[sub_resource type="RectangleShape2D" id=6]
+extents = Vector2( 12, 33.3333 )
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 40.5, 100 )
@@ -85,6 +88,12 @@ scale = Vector2( 0.333333, 0.333333 )
 position = Vector2( -88, -40 )
 shape = SubResource( 2 )
 
+[node name="Area_vision" type="Area2D" parent="AnimatedSprite"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AnimatedSprite/Area_vision"]
+position = Vector2( -27.3333, 2.54313e-06 )
+shape = SubResource( 6 )
+
 [node name="Cuerpo" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )
 
@@ -94,8 +103,8 @@ anims/Punch = SubResource( 4 )
 [node name="Salud" parent="." instance=ExtResource( 6 )]
 
 [node name="Agresividad" type="Timer" parent="."]
-wait_time = 3.0
 autostart = true
 
 [connection signal="area_entered" from="Area_dano" to="." method="_on_Area_dano_area_entered"]
+[connection signal="body_entered" from="AnimatedSprite/Area_vision" to="." method="_on_Area_vision_body_entered"]
 [connection signal="timeout" from="Agresividad" to="." method="_on_Agresividad_timeout"]

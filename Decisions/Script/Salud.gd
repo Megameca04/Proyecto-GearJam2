@@ -2,7 +2,7 @@ extends Node
 
 signal max_changed(new_max)
 signal changed(new_amount)
-signal depleted
+signal depleted()
 
 export (int) var max_amount = 20 setget set_max
 onready var current = max_amount setget set_current

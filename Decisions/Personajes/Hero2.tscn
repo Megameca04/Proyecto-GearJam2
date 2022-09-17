@@ -29,7 +29,7 @@ animations = [ {
 } ]
 
 [sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 30.5, 16 )
+extents = Vector2( 22.7501, 16 )
 
 [sub_resource type="RectangleShape2D" id=6]
 extents = Vector2( 12, 33.3333 )
@@ -85,10 +85,11 @@ playing = true
 scale = Vector2( 0.333333, 0.333333 )
 
 [node name="Area" type="CollisionShape2D" parent="AnimatedSprite/Area_ataque"]
-position = Vector2( -88, -40 )
+position = Vector2( -80.2501, -40 )
 shape = SubResource( 2 )
 
 [node name="Area_vision" type="Area2D" parent="AnimatedSprite"]
+visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AnimatedSprite/Area_vision"]
 position = Vector2( -27.3333, 2.54313e-06 )
@@ -107,4 +108,5 @@ autostart = true
 
 [connection signal="area_entered" from="Area_dano" to="." method="_on_Area_dano_area_entered"]
 [connection signal="body_entered" from="AnimatedSprite/Area_vision" to="." method="_on_Area_vision_body_entered"]
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
 [connection signal="timeout" from="Agresividad" to="." method="_on_Agresividad_timeout"]

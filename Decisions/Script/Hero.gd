@@ -11,6 +11,7 @@ var rival = null
 var velocity = Vector2.ZERO
 
 var agresivity = 0
+var move = true
 
 var rgn = RandomNumberGenerator.new()
 
@@ -89,14 +90,15 @@ func _on_Area_dano_area_entered(area):
 func ia_movement():
 	var distance = self.global_position.x - rival.global_position.x
 	
-	if abs(distance) > 150 and $Salud.current > 5:
-		match agresivity:
-			0:
-				velocity.x = speed*sign(distance)
-			1:
-				velocity.x = speed*-sign(distance)
-	elif abs(distance) > 150 and $Salud.current <= 5:
-		velocity.x = speed*sign(distance)
+	if move:
+		if abs(distance) > 150 and $Salud.current > 5:
+			match agresivity:
+				0:
+					velocity.x = speed*sign(distance)
+				1:
+					velocity.x = speed*-sign(distance)
+		elif abs(distance) > 150 and $Salud.current <= 5:
+			velocity.x = speed*sign(distance)
 	
 
 func _on_Agresividad_timeout():
@@ -109,3 +111,8 @@ func _on_Area_vision_body_entered(body):
 	var op = rgn.randi_range(0,1)
 	if op == 1:
 		$AnimationPlayer.play("Punch")
+		move = false
+
+
+func _on_AnimationPlayer_animation_finished(anim_name):
+	move = true

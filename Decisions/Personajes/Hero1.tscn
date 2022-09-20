@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Script/Hero.gd" type="Script" id=1]
 [ext_resource path="res://Sprites/Heroe1/Caminando 1.png" type="Texture" id=2]
@@ -32,7 +32,26 @@ animations = [ {
 } ]
 
 [sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 30.5, 16 )
+extents = Vector2( 24, 16 )
+
+[sub_resource type="RectangleShape2D" id=6]
+extents = Vector2( 36, 101 )
+
+[sub_resource type="Animation" id=7]
+resource_name = "Defeat"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.0, 90.0 ]
+}
 
 [sub_resource type="Animation" id=4]
 resource_name = "Punch"
@@ -66,6 +85,7 @@ tracks/1/keys = {
 script = ExtResource( 1 )
 
 [node name="Area_dano" type="Area2D" parent="."]
+collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area_dano"]
 shape = SubResource( 5 )
@@ -81,15 +101,35 @@ playing = true
 
 [node name="Area_ataque" type="Area2D" parent="AnimatedSprite"]
 scale = Vector2( 0.333333, 0.333333 )
+collision_layer = 2
 
 [node name="Area" type="CollisionShape2D" parent="AnimatedSprite/Area_ataque"]
-position = Vector2( -88, -40 )
+position = Vector2( -80.0001, -40 )
 shape = SubResource( 2 )
+disabled = true
+
+[node name="Area_vision" type="Area2D" parent="AnimatedSprite"]
+scale = Vector2( 0.333333, 0.333333 )
+
+[node name="Area" type="CollisionShape2D" parent="AnimatedSprite/Area_vision"]
+position = Vector2( -84, 0 )
+shape = SubResource( 6 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/Defeat = SubResource( 7 )
 anims/Punch = SubResource( 4 )
 
 [node name="Salud" parent="." instance=ExtResource( 6 )]
 
+[node name="Agresividad" type="Timer" parent="."]
+autostart = true
+
+[node name="K_timer" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
+
 [connection signal="area_entered" from="Area_dano" to="." method="_on_Area_dano_area_entered"]
+[connection signal="body_entered" from="AnimatedSprite/Area_vision" to="." method="_on_Area_vision_body_entered"]
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
+[connection signal="timeout" from="Agresividad" to="." method="_on_Agresividad_timeout"]
+[connection signal="timeout" from="K_timer" to="." method="_on_K_timer_timeout"]

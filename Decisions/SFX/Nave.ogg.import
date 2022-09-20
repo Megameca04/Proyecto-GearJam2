@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/Nave.ogg-5c2c772b0f98f4c94d8de403d69268af.oggstr"
+
+[deps]
+
+source_file="res://SFX/Nave.ogg"
+dest_files=[ "res://.import/Nave.ogg-5c2c772b0f98f4c94d8de403d69268af.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

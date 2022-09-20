@@ -23,7 +23,6 @@ func set_current(new_value):
 	
 	if current == 0:
 		emit_signal("depleted")
-		get_parent().queue_free()
 
 func initialize():
 	emit_signal("max_changed", max_amount)

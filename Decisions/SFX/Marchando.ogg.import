@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/Marchando.ogg-568907ba3fc5cfa2d1dfb80ab8dc3062.oggstr"
+
+[deps]
+
+source_file="res://SFX/Marchando.ogg"
+dest_files=[ "res://.import/Marchando.ogg-568907ba3fc5cfa2d1dfb80ab8dc3062.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

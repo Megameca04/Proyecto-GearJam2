@@ -1,46 +1,82 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Personajes/Hero1.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Personajes/Hero2.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Script/Pruebas.gd" type="Script" id=3]
+[ext_resource path="res://Sprites/Fondo.png" type="Texture" id=4]
+[ext_resource path="res://Sprites/Heroe2/Cabeza.png" type="Texture" id=5]
+[ext_resource path="res://Sprites/Heroe1/Cabeza.png" type="Texture" id=6]
+[ext_resource path="res://Barras_vida.tres" type="Theme" id=7]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 509, 7.5 )
+extents = Vector2( 510.5, 7.5 )
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource( 3 )
 
+[node name="Fondo" type="Sprite" parent="."]
+position = Vector2( 512, 298 )
+scale = Vector2( 1, 1.00667 )
+z_index = -2
+texture = ExtResource( 4 )
+
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
-position = Vector2( 512, 501 )
+position = Vector2( 513.5, 488 )
 shape = SubResource( 1 )
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="StaticBody2D"]
-position = Vector2( 4, 260 )
+position = Vector2( -8, 264 )
 rotation = 1.5708
 shape = SubResource( 1 )
 
 [node name="CollisionShape2D3" type="CollisionShape2D" parent="StaticBody2D"]
-position = Vector2( 1026, 262 )
+position = Vector2( 1032, 264 )
 rotation = 1.5708
 shape = SubResource( 1 )
 
 [node name="Hero1" parent="." instance=ExtResource( 1 )]
-position = Vector2( 254, 184 )
-activado = true
+position = Vector2( 896, 272 )
 
 [node name="Hero2" parent="." instance=ExtResource( 2 )]
-position = Vector2( 820, 236 )
+position = Vector2( 136, 280 )
+activado = true
 
-[node name="Hero1_life" type="ProgressBar" parent="."]
-margin_left = 20.0
-margin_top = 10.0
-margin_right = 244.0
-margin_bottom = 24.0
+[node name="Control" type="Control" parent="."]
+margin_right = 1024.0
+margin_bottom = 600.0
 
-[node name="Hero2_life" type="ProgressBar" parent="."]
-margin_left = 748.0
-margin_top = 20.0
-margin_right = 972.0
-margin_bottom = 34.0
+[node name="Hero1_life" type="ProgressBar" parent="Control"]
+margin_left = 976.0
+margin_top = 24.0
+margin_right = 1320.0
+margin_bottom = 48.0
+rect_scale = Vector2( -1, 1 )
+theme = ExtResource( 7 )
+percent_visible = false
+
+[node name="TextureRect" type="TextureRect" parent="Control/Hero1_life"]
+margin_left = 16.0
+margin_top = -16.0
+margin_right = 38.0
+margin_bottom = 16.0
+rect_scale = Vector2( -2, 2 )
+texture = ExtResource( 6 )
+
+[node name="Hero2_life" type="ProgressBar" parent="Control"]
+margin_left = 48.0
+margin_top = 24.0
+margin_right = 392.0
+margin_bottom = 48.0
+theme = ExtResource( 7 )
+value = 50.0
+percent_visible = false
+
+[node name="TextureRect" type="TextureRect" parent="Control/Hero2_life"]
+margin_left = 16.0
+margin_top = -16.0
+margin_right = 42.0
+margin_bottom = 14.0
+rect_scale = Vector2( -2, 2 )
+texture = ExtResource( 5 )

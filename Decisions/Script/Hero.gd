@@ -3,24 +3,25 @@ extends KinematicBody2D
 export (bool) var activado
 
 var speed = 300
-var jump_speed = 200
+var jump_speed = 400
 var weight = 500
 
 var rival = null
 
 var velocity = Vector2.ZERO
+var knockback = Vector2.ZERO
 
 var agresivity = 0
 var move = true
 
 var rgn = RandomNumberGenerator.new()
+var distance
+
 
 func _ready():
 	$Salud.connect("depleted",self,"defeat")
 	
 	var rv = get_tree().get_nodes_in_group("Player")
-	
-	print(rv.size())
 	
 	var i = 0
 	while i < rv.size():
@@ -29,6 +30,8 @@ func _ready():
 			rival = rv[i]
 			
 		i += 1
+	
+	distance = self.global_position.x - rival.global_position.x
 
 func _process(delta):
 	animations()
@@ -45,7 +48,7 @@ func _physics_process(delta):
 	else:
 		ia_movement()
 	
-	velocity = move_and_slide(velocity, Vector2(0,-1))
+	velocity = move_and_slide(velocity + knockback, Vector2(0,-1))
 
 func get_input():
 	
@@ -69,7 +72,7 @@ func animations():
 	
 	var z = Input.is_action_just_pressed("ui_z")
 	
-	if z:
+	if z and activado:
 		$AnimationPlayer.play("Punch")
 	
 	if !$AnimationPlayer.is_playing():
@@ -77,18 +80,25 @@ func animations():
 			$AnimatedSprite.animation = "move"
 		else:
 			$AnimatedSprite.animation = "default"
-	
+		
 	$AnimatedSprite.scale.x = 3*sign(self.global_position.x - rival.global_position.x)
 
 func defeat():
-	self.queue_free()
+	set_physics_process(false)
+	set_process(false)
+	$AnimationPlayer.play("Defeat")
 
 func _on_Area_dano_area_entered(area):
-	print("a")
-	$Salud.current -= 1
-
+	if area.name == "Area_ataque":
+		knockback.x += sign(distance)*300
+		$K_timer.start()
+		$Salud.current -= 1
+		if activado:
+			$AnimatedSprite/Area_ataque/Area.disabled = true
+			$AnimatedSprite/Area_ataque/Area.disabled = false
+		
 func ia_movement():
-	var distance = self.global_position.x - rival.global_position.x
+	distance = self.global_position.x - rival.global_position.x
 	
 	if move:
 		if abs(distance) > 150 and $Salud.current > 5:
@@ -108,11 +118,13 @@ func _on_Agresividad_timeout():
 
 func _on_Area_vision_body_entered(body):
 	rgn.randomize()
-	var op = rgn.randi_range(0,1)
+	var op = rgn.randi_range(0,2)
 	if op == 1:
 		$AnimationPlayer.play("Punch")
 		move = false
 
-
 func _on_AnimationPlayer_animation_finished(anim_name):
 	move = true
+
+func _on_K_timer_timeout():
+	knockback = Vector2.ZERO

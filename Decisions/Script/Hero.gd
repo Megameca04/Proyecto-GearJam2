@@ -31,6 +31,9 @@ func _ready():
 			
 		i += 1
 	
+	set_physics_process(false)
+	set_process(false)
+	
 	distance = self.global_position.x - rival.global_position.x
 
 func _process(delta):

@@ -15,3 +15,13 @@ func _ready():
 	
 	salud_h1.initialize()
 	salud_h2.initialize()
+	
+	$AnimationPlayer.play("Inicio")
+
+
+func _on_AnimationPlayer_animation_finished(anim_name):
+	if anim_name == "Inicio":
+		$Hero1.set_physics_process(true)
+		$Hero1.set_process(true)
+		$Hero2.set_physics_process(true)
+		$Hero2.set_process(true)

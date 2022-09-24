@@ -17,6 +17,8 @@ var move = true
 var rgn = RandomNumberGenerator.new()
 var distance
 
+signal ending()
+
 
 func _ready():
 	$Salud.connect("depleted",self,"defeat")
@@ -87,31 +89,31 @@ func animations():
 	$AnimatedSprite.scale.x = 3*sign(self.global_position.x - rival.global_position.x)
 
 func defeat():
+	$AnimationPlayer.play("Defeat")
 	set_physics_process(false)
 	set_process(false)
-	$AnimationPlayer.play("Defeat")
 
 func _on_Area_dano_area_entered(area):
 	if area.name == "Area_ataque":
 		knockback.x += sign(distance)*300
+		$Golpe.play()
 		$K_timer.start()
 		$Salud.current -= 1
-		if activado:
-			$AnimatedSprite/Area_ataque/Area.disabled = true
-			$AnimatedSprite/Area_ataque/Area.disabled = false
+		if !activado and $Salud.current > 1:
+			$AnimationPlayer.play("R_vf")
 		
 func ia_movement():
 	distance = self.global_position.x - rival.global_position.x
 	
 	if move:
-		if abs(distance) > 150 and $Salud.current > 5:
+		if abs(distance) > 150 and $Salud.current < 5:
 			match agresivity:
 				0:
 					velocity.x = speed*sign(distance)
 				1:
 					velocity.x = speed*-sign(distance)
-		elif abs(distance) > 150 and $Salud.current <= 5:
-			velocity.x = speed*sign(distance)
+		elif abs(distance) > 150 and $Salud.current >= 5:
+			velocity.x = -speed*sign(distance)
 	
 
 func _on_Agresividad_timeout():
@@ -121,12 +123,16 @@ func _on_Agresividad_timeout():
 
 func _on_Area_vision_body_entered(body):
 	rgn.randomize()
-	var op = rgn.randi_range(0,2)
-	if op == 1:
-		$AnimationPlayer.play("Punch")
-		move = false
+	var op = rgn.randi_range(0,1)
+	
+	if !activado:
+		if op == 1:
+			$AnimationPlayer.play("Punch")
+			move = false
 
 func _on_AnimationPlayer_animation_finished(anim_name):
+	if anim_name == "Defeat":
+		emit_signal("ending")
 	move = true
 
 func _on_K_timer_timeout():

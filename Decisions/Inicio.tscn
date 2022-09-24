@@ -1,8 +1,10 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Barras_vida.tres" type="Theme" id=1]
 [ext_resource path="res://Sprites/Fondo plano.png" type="Texture" id=2]
 [ext_resource path="res://Script/Inicio.gd" type="Script" id=3]
+[ext_resource path="res://Sprites/Logo Desicions.png" type="Texture" id=4]
+[ext_resource path="res://Sprites/Controles.png" type="Texture" id=5]
 
 [node name="Control" type="Control"]
 anchor_right = 1.0
@@ -14,19 +16,43 @@ margin_right = 40.0
 margin_bottom = 40.0
 texture = ExtResource( 2 )
 
+[node name="TextureRect" type="TextureRect" parent="TextureRect"]
+margin_left = 120.0
+margin_top = 372.0
+margin_right = 157.0
+margin_bottom = 399.0
+rect_min_size = Vector2( 37, 0 )
+rect_scale = Vector2( 4, 4 )
+texture = ExtResource( 5 )
+
 [node name="CenterContainer" type="CenterContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
 
-[node name="Button" type="Button" parent="CenterContainer"]
-margin_left = 472.0
-margin_top = 285.0
-margin_right = 552.0
-margin_bottom = 315.0
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
+margin_left = 226.0
+margin_top = 197.0
+margin_right = 797.0
+margin_bottom = 403.0
+
+[node name="TextureRect" type="TextureRect" parent="CenterContainer/VBoxContainer"]
+margin_right = 571.0
+margin_bottom = 172.0
+texture = ExtResource( 4 )
+
+[node name="CenterContainer" type="CenterContainer" parent="CenterContainer/VBoxContainer"]
+margin_top = 176.0
+margin_right = 571.0
+margin_bottom = 206.0
+
+[node name="Button" type="Button" parent="CenterContainer/VBoxContainer/CenterContainer"]
+margin_left = 245.0
+margin_right = 325.0
+margin_bottom = 30.0
 rect_min_size = Vector2( 80, 30 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = ExtResource( 1 )
 text = "Play"
 
-[connection signal="pressed" from="CenterContainer/Button" to="." method="_on_Button_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/CenterContainer/Button" to="." method="_on_Button_pressed"]

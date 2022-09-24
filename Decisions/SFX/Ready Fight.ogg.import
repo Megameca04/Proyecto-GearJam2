@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/Ready Fight.ogg-2ab92fa84eff1ac7aa0643ad03f9b32d.oggstr"
+
+[deps]
+
+source_file="res://SFX/Ready Fight.ogg"
+dest_files=[ "res://.import/Ready Fight.ogg-2ab92fa84eff1ac7aa0643ad03f9b32d.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

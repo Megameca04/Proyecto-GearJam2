@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://Script/Hero.gd" type="Script" id=1]
 [ext_resource path="res://Sprites/Heroe2/Base copia.png" type="Texture" id=2]
@@ -6,6 +6,8 @@
 [ext_resource path="res://Sprites/Heroe2/Puñetazo.png" type="Texture" id=4]
 [ext_resource path="res://Sprites/Heroe2/Caminando 2.png" type="Texture" id=5]
 [ext_resource path="res://Nodos/Salud.tscn" type="PackedScene" id=6]
+[ext_resource path="res://SFX/Golpe.ogg" type="AudioStream" id=7]
+[ext_resource path="res://SFX/Derrota.ogg" type="AudioStream" id=8]
 
 [sub_resource type="RectangleShape2D" id=5]
 extents = Vector2( 42, 102 )
@@ -37,6 +39,58 @@ extents = Vector2( 12, 33.3333 )
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 40.5, 100 )
 
+[sub_resource type="Animation" id=8]
+resource_name = "Defeat"
+length = 1.5
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.0, -90.0 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Derrota:playing")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("AnimatedSprite/Area_vision/CollisionShape2D:disabled")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0.1 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Area_dano/CollisionShape2D:disabled")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0.1 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+
 [sub_resource type="Animation" id=4]
 resource_name = "Punch"
 length = 0.5
@@ -65,6 +119,22 @@ tracks/1/keys = {
 "values": [ false, true ]
 }
 
+[sub_resource type="Animation" id=7]
+resource_name = "R_vf"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/path = NodePath("AnimatedSprite/Area_vision/CollisionShape2D:disabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+
 [node name="Hero2" type="KinematicBody2D" groups=["Player"]]
 script = ExtResource( 1 )
 
@@ -76,9 +146,8 @@ collision_mask = 2
 shape = SubResource( 5 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
-scale = Vector2( 3, 3 )
+scale = Vector2( -3, 3 )
 frames = SubResource( 3 )
-animation = "move"
 playing = true
 
 [node name="Area_ataque" type="Area2D" parent="AnimatedSprite"]
@@ -100,7 +169,9 @@ shape = SubResource( 6 )
 shape = SubResource( 1 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/Defeat = SubResource( 8 )
 anims/Punch = SubResource( 4 )
+anims/R_vf = SubResource( 7 )
 
 [node name="Salud" parent="." instance=ExtResource( 6 )]
 
@@ -109,6 +180,12 @@ autostart = true
 
 [node name="K_timer" type="Timer" parent="."]
 wait_time = 0.5
+
+[node name="Golpe" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 7 )
+
+[node name="Derrota" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 8 )
 
 [connection signal="area_entered" from="Area_dano" to="." method="_on_Area_dano_area_entered"]
 [connection signal="body_entered" from="AnimatedSprite/Area_vision" to="." method="_on_Area_vision_body_entered"]

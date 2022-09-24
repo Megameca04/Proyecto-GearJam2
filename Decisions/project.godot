@@ -12,11 +12,19 @@ config_version=4
 
 config/name="Decisions"
 run/main_scene="res://Inicio.tscn"
-config/icon="res://icon.png"
+run/disable_stdout=true
+run/disable_stderr=true
+config/icon="res://Sprites/Heroe2/Cabeza.png"
+config/windows_native_icon="res://Cabeza.ico"
 
 [autoload]
 
 SceneManager="*res://Script/SceneManager.gd"
+
+[display]
+
+window/size/resizable=false
+window/stretch/aspect="keep"
 
 [gui]
 
